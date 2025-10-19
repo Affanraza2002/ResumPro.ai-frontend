@@ -1,2 +1,0 @@
-# ResumPro.ai-frontend
-
