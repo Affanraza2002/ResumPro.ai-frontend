@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart, SendHorizonal, Loader2, CheckCircle2, User2, AtSign, MessageSquare, Briefcase } from 'lucide-react'
-import axios from 'axios'
+import api from '../../configs/api'
 
 const SUBJECTS = [
     'Hiring Inquiry',
@@ -34,8 +34,7 @@ const Footer = () => {
         if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return
         setStatus('loading')
         try {
-            const base = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000/api'
-            await axios.post(`${base}/contact/send`, form)
+            await api.post('/contact/send', form)
             setStatus('success')
             setForm({ name: '', email: '', subject: SUBJECTS[0], message: '' })
         } catch (err) {
