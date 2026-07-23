@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart, SendHorizonal, Loader2, CheckCircle2, User2, AtSign, MessageSquare, Briefcase } from 'lucide-react'
+import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart, SendHorizonal, Loader2, CheckCircle2, User2, AtSign, MessageSquare, Briefcase, BriefcaseBusiness } from 'lucide-react'
 import api from '../../configs/api'
 
 const SUBJECTS = [
@@ -18,9 +18,9 @@ const Footer = () => {
     const [errorMsg, setErrorMsg] = useState('')
 
     const socialLinks = [
-        { icon: Github, href: 'https://github.com', label: 'GitHub' },
-        { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-        { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+        { icon: Github, href: 'https://github.com/Affanraza2002', label: 'GitHub' },
+        { icon: Linkedin, href: 'https://www.linkedin.com/in/affanraza202/', label: 'LinkedIn' },
+        { icon: BriefcaseBusiness, href: 'https://meaffan.vercel.app/', label: 'Twitter' },
         { icon: Mail, href: 'mailto:razaffan08@gmail.com', label: 'Email' },
     ]
 
@@ -243,7 +243,7 @@ const Footer = () => {
                         <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 animate-pulse" />
                         <span>by</span>
                         <a
-                            href="https://github.com"
+                            href=""
                             target="_blank"
                             rel="noreferrer"
                             className="font-medium text-slate-600 hover:text-emerald-600 underline underline-offset-2 flex items-center gap-0.5"
