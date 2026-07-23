@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, DownloadIcon, EyeIcon, EyeOff, FileText, FolderIcon, GraduationCap, Share2Icon, Sparkles, User, SaveIcon, ZapIcon, XIcon, TrendingUpIcon, AlertCircleIcon, CheckCircleIcon, ClockIcon } from 'lucide-react'
+import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, DownloadIcon, EyeIcon, EyeOff, FileText, FolderIcon, GraduationCap, Share2Icon, Sparkles, User, SaveIcon, ZapIcon, XIcon, AlertCircleIcon, CheckCircleIcon, ClockIcon, LayoutListIcon, BriefcaseIcon } from 'lucide-react'
 import PersonalInfoForm from '../components/PersonalInfoForm'
 import ResumePreview from '../components/ResumePreview'
 import TemplateSelector from '../components/TemplateSelector'
@@ -10,6 +10,8 @@ import ExperienceForm from '../components/ExperienceForm'
 import EducationForm from '../components/EducationForm'
 import ProjectForm from '../components/ProjectForm'
 import SkillForm from '../components/SkillForm'
+import CustomSectionForm from '../components/CustomSectionForm'
+import JDMatcherPanel from '../components/JDMatcherPanel'
 import { useSelector } from 'react-redux'
 import api from '../configs/api'
 import toast from 'react-hot-toast'
@@ -22,6 +24,7 @@ const SECTIONS = [
   { id: "education", name: "Education", icon: GraduationCap },
   { id: "project", name: "Projects", icon: FolderIcon },
   { id: "skills", name: "Skills", icon: Sparkles },
+  { id: "custom", name: "Custom", icon: LayoutListIcon },
 ]
 
 const ATSPanel = ({ resumeData, token, onClose }) => {
@@ -50,7 +53,7 @@ const ATSPanel = ({ resumeData, token, onClose }) => {
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 40 }}
-      className="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl border-l border-slate-200 z-40 overflow-y-auto"
+      className="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl border-l border-slate-200 z-[60] overflow-y-auto"
     >
       <div className="sticky top-0 bg-white border-b border-slate-100 px-5 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -163,7 +166,9 @@ const ResumeBuilder = () => {
   const [activeSectionIndex, setActiveSectionIndex] = useState(0)
   const [removeBackground, setRemoveBackground] = useState(false)
   const [showATSPanel, setShowATSPanel] = useState(false)
+  const [showJDMatcher, setShowJDMatcher] = useState(false)
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'unsaved' | 'saving'
+  const autoSaveTimerRef = useRef(null)
   const [resumeData, setResumeData] = useState({
     _id: '',
     title: '',
@@ -173,6 +178,7 @@ const ResumeBuilder = () => {
     education: [],
     project: [],
     skills: [],
+    custom_sections: [],
     template: "classic",
     accent_color: '#3B82F6',
     public: false,
@@ -197,6 +203,16 @@ const ResumeBuilder = () => {
     setResumeData(updater)
     setSaveStatus('unsaved')
   }, [])
+
+  // Auto-save debounce (3 seconds after last change)
+  useEffect(() => {
+    if (saveStatus !== 'unsaved') return
+    if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current)
+    autoSaveTimerRef.current = setTimeout(() => {
+      saveResume()
+    }, 3000)
+    return () => clearTimeout(autoSaveTimerRef.current)
+  }, [resumeData, saveStatus]) // eslint-disable-line
 
   const activeSection = SECTIONS[activeSectionIndex]
 
@@ -287,10 +303,19 @@ const ResumeBuilder = () => {
             {/* ATS Score */}
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={() => setShowATSPanel(o => !o)}
+              onClick={() => { setShowATSPanel(o => !o); setShowJDMatcher(false) }}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl text-xs font-medium hover:bg-amber-100 transition-colors"
             >
               <ZapIcon className="w-3.5 h-3.5" /> ATS Score
+            </motion.button>
+
+            {/* JD Matcher */}
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => { setShowJDMatcher(o => !o); setShowATSPanel(false) }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-xl text-xs font-medium hover:bg-teal-100 transition-colors"
+            >
+              <BriefcaseIcon className="w-3.5 h-3.5" /> JD Match
             </motion.button>
 
             {/* Visibility */}
@@ -411,6 +436,12 @@ const ResumeBuilder = () => {
                   onChange={d => handleResumeDataChange(prev => ({ ...prev, skills: d }))}
                 />
               )}
+              {activeSection.id === "custom" && (
+                <CustomSectionForm
+                  data={resumeData.custom_sections}
+                  onChange={d => handleResumeDataChange(prev => ({ ...prev, custom_sections: d }))}
+                />
+              )}
             </motion.div>
 
             {/* Prev / Next */}
@@ -451,6 +482,17 @@ const ResumeBuilder = () => {
             resumeData={resumeData}
             token={token}
             onClose={() => setShowATSPanel(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* JD Matcher Panel */}
+      <AnimatePresence>
+        {showJDMatcher && (
+          <JDMatcherPanel
+            resumeData={resumeData}
+            token={token}
+            onClose={() => setShowJDMatcher(false)}
           />
         )}
       </AnimatePresence>

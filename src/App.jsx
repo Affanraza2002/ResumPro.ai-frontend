@@ -47,7 +47,36 @@ useEffect(()=>{
 
   return (
  <>
- <Toaster />
+ <Toaster
+   position="top-right"
+   toastOptions={{
+     duration: 4000,
+     style: {
+       fontSize: '14px',
+       fontWeight: '500',
+       padding: '14px 18px',
+       minWidth: '300px',
+       borderRadius: '14px',
+       boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+     },
+     success: {
+       style: {
+         background: '#f0fdf4',
+         color: '#166534',
+         border: '1px solid #bbf7d0',
+       },
+       iconTheme: { primary: '#16a34a', secondary: '#dcfce7' },
+     },
+     error: {
+       style: {
+         background: '#fef2f2',
+         color: '#991b1b',
+         border: '1px solid #fecaca',
+       },
+       iconTheme: { primary: '#dc2626', secondary: '#fee2e2' },
+     },
+   }}
+ />
   <Routes>
  <Route path='/' element={<Home/>}/>
  <Route path='app' element={<Layout/> } >
