@@ -27,7 +27,7 @@ const Login = () => {
              localStorage.setItem('token',data.token)
              toast.success(data.message)
          } catch(error)  {
-            toast(error?.response?.data?.message || error.message)
+            toast.error(error?.response?.data?.message || error.message)
             
          }
     }
@@ -40,7 +40,7 @@ const Login = () => {
     <div className='flex items-center justify-center min-h-screen bg-gray-50'>
     <form onSubmit={handleSubmit} className="sm:w-[350px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white">
                 <h1 className="text-gray-900 text-3xl mt-10 font-medium">{state === "login" ? "Login" : "Sign up"}</h1>
-                <p className="text-gray-500 text-sm mt-2">Please {state}to continue</p>
+                <p className="text-gray-500 text-sm mt-2">Please {state} to continue</p>
                 {state !== "login" && (
                     <div className="flex items-center mt-6 w-full bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
                         <User2Icon size={16} color='#687280'/>
