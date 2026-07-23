@@ -1,60 +1,100 @@
-import { Zap } from 'lucide-react';
+import { Zap, BrainCircuit, ShieldCheck, Sparkles } from 'lucide-react';
 import React from 'react'
 import Title from './Title'
+import { motion } from 'framer-motion'
 
 const Features = () => {
-    const [isHover, setIsHover] = React.useState(false);
+  const featureList = [
+    {
+      title: "AI-Powered Enhancements",
+      description: "Instantly polish your professional summary and experience descriptions using tailored industry terminology.",
+      icon: BrainCircuit,
+      color: "emerald",
+      bgClass: "bg-emerald-50 border-emerald-200 text-emerald-600",
+      hoverClass: "group-hover:bg-emerald-50/80 group-hover:border-emerald-300"
+    },
+    {
+      title: "Recruiter-Grade Security",
+      description: "Your professional data is safeguarded with robust encryption and standard compliance protocols.",
+      icon: ShieldCheck,
+      color: "teal",
+      bgClass: "bg-teal-50 border-teal-200 text-teal-600",
+      hoverClass: "group-hover:bg-teal-50/80 group-hover:border-teal-300"
+    },
+    {
+      title: "Interactive Live Previews",
+      description: "Watch your resume layout adjust dynamically in real-time as you enter your details.",
+      icon: Sparkles,
+      color: "cyan",
+      bgClass: "bg-cyan-50 border-cyan-200 text-cyan-600",
+      hoverClass: "group-hover:bg-cyan-50/80 group-hover:border-cyan-300"
+    }
+  ]
+
   return (
-        <div id='features' className='flex flex-col items-center my-10 scroll-mt-12'>
+    <div id='features' className='flex flex-col items-center my-20 px-4 scroll-mt-16 max-w-7xl mx-auto'>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="flex items-center gap-2 text-sm text-emerald-600 bg-emerald-50 border border-emerald-200/60 rounded-full px-4 py-1.5 font-medium shadow-sm shadow-emerald-50"
+      >
+        <Zap className="w-3.5 h-3.5" />
+        <span>Simple And Effective Process</span>
+      </motion.div>
+      
+      <Title 
+        title='Build a Winning Resume' 
+        description='Our streamlined builder helps you create an outstanding professional resume in minutes with intelligent AI-powered coaching.'
+      />
 
-         <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-4 py-1.5">
-            <Zap width={14}/>
-            <span>Simple And Effective Process</span>
-        </div>
-         <Title title= 'Build your resume' description='Our Streamlined process helps to create a professional resume in  minutes with intelligent AI-powered tools and features.'/>
-            <div className="flex flex-col md:flex-row items-center justify-center xl:-mt-10">
-                <img className="max-w-2xl w-full xl:-ml-32" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/features/group-image-1.png" alt="" />
-                <div className="px-4 md:px-0" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-                    <div className={"flex items-center justify-center gap-6 max-w-md group cursor-pointer"}>
-                        <div className={`p-6 group-hover:bg-violet-100 border border-transparent group-hover:border-violet-300  flex gap-4 rounded-xl transition-colors ${!isHover ? 'border-violet-300 bg-violet-100' : ''}`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-6 stroke-violet-600"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" /><circle cx="16.5" cy="7.5" r=".5" fill="currentColor" /></svg>
-                            <div className="space-y-2">
-                                <h3 className="text-base font-semibold text-slate-700">Real-Time Analytics</h3>
-                                <p className="text-sm text-slate-600 max-w-xs">Get instant insights into your finances with live dashboards.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center gap-6 max-w-md group cursor-pointer">
-                        <div className="p-6 group-hover:bg-green-100 border border-transparent group-hover:border-green-300 flex gap-4 rounded-xl transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-6 stroke-green-600"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" /></svg>
-                            <div className="space-y-2">
-                                <h3 className="text-base font-semibold text-slate-700">Bank-Grade Security</h3>
-                                <p className="text-sm text-slate-600 max-w-xs">End-to-end encryption, 2FA, compliance with GDPR standards.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-center gap-6 max-w-md group cursor-pointer">
-                        <div className="p-6 group-hover:bg-orange-100 border border-transparent group-hover:border-orange-300 flex gap-4 rounded-xl transition-colors">
-                            <svg className="size-6 stroke-orange-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg>
-                            <div className="space-y-2">
-                                <h3 className="text-base font-semibold text-slate-700">Customizable Reports</h3>
-                                <p className="text-sm text-slate-600 max-w-xs">Export professional, audit-ready financial reports for tax or internal review.</p>
-                            </div>
-                        </div>
-                    </div>
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-12 mt-12 w-full">
+        {/* Left Image Mockup */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95, x: -30 }}
+          whileInView={{ opacity: 1, scale: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full lg:w-1/2 flex justify-center"
+        >
+          <img 
+            className="max-w-md w-full rounded-2xl shadow-2xl border border-slate-200/60" 
+            src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/features/group-image-1.png" 
+            alt="Resume builder workspace" 
+          />
+        </motion.div>
+
+        {/* Right Feature List */}
+        <div className="w-full lg:w-1/2 space-y-5">
+          {featureList.map((item, idx) => {
+            const Icon = item.icon
+            return (
+              <motion.div 
+                key={item.title}
+                initial={{ opacity: 0, y: 15, x: 20 }}
+                whileInView={{ opacity: 1, y: 0, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
+                className="group cursor-pointer p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex gap-4 items-start"
+              >
+                <div className={`p-3 rounded-xl border ${item.bgClass} shrink-0 transition-colors duration-300`}>
+                  <Icon className="w-5 h-5" />
                 </div>
-            </div>
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-            
-                * {
-                    font-family: 'Poppins', sans-serif;
-                }
-            `}</style>
+                <div className="space-y-1">
+                  <h3 className="text-base font-semibold text-slate-800 group-hover:text-emerald-600 transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
-    );
-};
-  
-
+      </div>
+    </div>
+  )
+}
 
 export default Features

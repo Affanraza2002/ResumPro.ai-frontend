@@ -1,129 +1,160 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Sparkles, ArrowRight, Play, CheckCircle } from 'lucide-react';
 
 const Hero = () => {
+  const { user } = useSelector(state => state.auth)
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
-    const {user} = useSelector(state => state.auth)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+    }
+  }
 
-    const [menuOpen, setMenuOpen] = React.useState(false);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
+  }
 
-    const logos = [
-        'https://saasly.prebuiltui.com/assets/companies-logo/instagram.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/framer.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/microsoft.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/huawei.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/walmart.svg',
-    ]
   return (
-        <>
-            <div className="min-h-screen pb-20">
-                {/* Navbar */}
-                <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
-                    <a href="/">
-                      <img src="/logo.svg" alt="LogoImg" className='h-11 w-auto' />
-                    </a>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-emerald-50/40 via-white to-slate-50">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -z-10 w-[1000px] h-[600px] bg-gradient-to-br from-emerald-100/30 to-teal-50/20 rounded-full blur-[120px] opacity-70" />
 
-                    <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
-                        <a href="#" className="hover:text-green-600 transition">Home</a>
-                        <a href="#features" className="hover:text-green-600 transition">Features</a>
-                        <a href="#testimonials" className="hover:text-green-600 transition">Testimonials</a>
-                        <a href="#cta" className="hover:text-green-600 transition">Contact</a>
-                    </div>
+      {/* Navbar */}
+      <motion.nav 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm"
+      >
+        <a href="/" className="flex items-center gap-2 group">
+          <img src="/logo.svg" alt="ResumPro.ai" className="h-10 w-auto group-hover:scale-105 transition-transform" />
+        </a>
 
-                    <div className="flex gap-2">
-                        <Link to='/app?state=register'  className="hidden md:block px-6 py-2 bg-green-500 hover:bg-green-700 active:scale-95 transition-all rounded-full text-white" hidden={user} >
-                            Get started
-                        </Link>
-                        <Link to='/app?state=login' className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900"  hidden={user} >
-                            Login
-                        </Link>
-                        <Link to='/app' className='hidden md:block px-8 py-2 bg-green-500 hover:bg-green-700 active:scale-95  transition-all rounded-full text-white ' hidden={!user}   >
-                            Dashboard
-                        </Link>
-                    </div>
+        <div className="hidden md:flex items-center gap-8 text-slate-600 font-medium">
+          <a href="#" className="hover:text-emerald-600 transition-colors">Home</a>
+          <a href="#features" className="hover:text-emerald-600 transition-colors">Features</a>
+          <a href="#testimonals" className="hover:text-emerald-600 transition-colors">Testimonials</a>
+          <a href="#cta" className="hover:text-emerald-600 transition-colors">Contact</a>
+        </div>
 
-                    <button onClick={() => setMenuOpen(true)} className="md:hidden active:scale-90 transition" >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" className="lucide lucide-menu" >
-                            <path d="M4 5h16M4 12h16M4 19h16" />
-                        </svg>
-                    </button>
-                </nav>
+        <div className="flex gap-3">
+          {!user ? (
+            <>
+              <Link to="/app?state=login" className="hidden md:inline-flex px-5 py-2 border border-slate-200 rounded-full text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all font-medium">
+                Login
+              </Link>
+              <Link to="/app?state=register" className="hidden md:inline-flex px-5 py-2 bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-100 rounded-full text-white transition-all font-medium">
+                Get Started
+              </Link>
+            </>
+          ) : (
+            <Link to="/app" className="hidden md:inline-flex px-6 py-2 bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-100 rounded-full text-white transition-all font-medium">
+              Dashboard
+            </Link>
+          )}
 
-                {/* Mobile Menu */}
-                <div className={`fixed inset-0 z-[100] bg-black/40 text-black backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`} >
-                    <a href="#" className="text-white">Home</a>
-                    <a href="#features" className="text-white">Features</a>
-                    <a href="#testimonials" className="text-white">Testimonials</a>
-                    <a href="#cta" className="text-white">Contact</a>
-                    <button onClick={() => setMenuOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-green-600 hover:bg-green-700 transition text-white rounded-md flex" >
-                        X
-                    </button>
-                </div>
+          <button onClick={() => setMenuOpen(true)} className="md:hidden p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </motion.nav>
 
-                {/* Hero Section */}
-                <div className="relative flex flex-col items-center justify-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
-                    <div className="absolute top-28 xl:top-10 -z-10 left-1/4 size-72 sm:size-96 xl:size-120 2xl:size-132 bg-green-300 blur-[100px] opacity-30"></div>
+      {/* Mobile Menu */}
+      <div className={`fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-all duration-300 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} >
+        <button onClick={() => setMenuOpen(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center">
+          ✕
+        </button>
+        <a href="#" onClick={() => setMenuOpen(false)} className="text-white hover:text-emerald-400 font-medium">Home</a>
+        <a href="#features" onClick={() => setMenuOpen(false)} className="text-white hover:text-emerald-400 font-medium">Features</a>
+        <a href="#testimonals" onClick={() => setMenuOpen(false)} className="text-white hover:text-emerald-400 font-medium">Testimonials</a>
+        <a href="#cta" onClick={() => setMenuOpen(false)} className="text-white hover:text-emerald-400 font-medium">Contact</a>
+        <Link to="/app" onClick={() => setMenuOpen(false)} className="px-8 py-3 bg-emerald-500 text-white rounded-full font-semibold shadow-lg shadow-emerald-500/20">
+          Get Started
+        </Link>
+      </div>
 
-                    {/* Avatars + Stars */}
-                    <div className="flex items-center mt-24">
-                        <div className="flex -space-x-3 pr-3">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" alt="user3" className="size-8 object-cover rounded-full border-2 border-white hover:-translate-y-0.5 transition z-[1]" />
-                            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200" alt="user1" className="size-8 object-cover rounded-full border-2 border-white hover:-translate-y-0.5 transition z-2" />
-                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200" alt="user2" className="size-8 object-cover rounded-full border-2 border-white hover:-translate-y-0.5 transition z-[3]" />
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" alt="user3" className="size-8 object-cover rounded-full border-2 border-white hover:-translate-y-0.5 transition z-[4]" />
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="user5" className="size-8 rounded-full border-2 border-white hover:-translate-y-0.5 transition z-[5]" />
-                        </div>
+      {/* Main Hero Container */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative max-w-5xl mx-auto px-4 pt-16 pb-24 text-center flex flex-col items-center"
+      >
+        {/* Avatars + Users Count badge */}
+        <motion.div 
+          variants={itemVariants} 
+          className="flex items-center gap-3.5 px-4 py-2 bg-white/80 border border-emerald-100 rounded-full shadow-sm shadow-emerald-50/50"
+        >
+          <div className="flex -space-x-2">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="User" className="w-6.5 h-6.5 rounded-full object-cover border-2 border-white shadow-sm" />
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" alt="User" className="w-6.5 h-6.5 rounded-full object-cover border-2 border-white shadow-sm" />
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100" alt="User" className="w-6.5 h-6.5 rounded-full object-cover border-2 border-white shadow-sm" />
+          </div>
+          <p className="text-xs font-semibold text-slate-700 flex items-center gap-1">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-500 fill-emerald-100" />
+            Loved by 10,000+ applicants
+          </p>
+        </motion.div>
 
-                        <div>
-                            <div className="flex ">
-                                {Array(5).fill(0).map((_, i) => (
-                                    <svg key={i} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-star text-transparent fill-green-600" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
-                                ))}
-                            </div>
-                            <p className="text-sm text-gray-700">
-                                Used by 10,000+ users
-                            </p>
-                        </div>
-                    </div>
+        {/* Headline */}
+        <motion.h1 
+          variants={itemVariants}
+          className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900 mt-6 leading-[1.15]"
+        >
+          Land your dream job with an <br />
+          <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">AI-Powered Resume</span>
+        </motion.h1>
 
-                    {/* Headline + CTA */}
-                    <h1 className="text-5xl md:text-6xl font-semibold max-w-5xl text-center mt-4 md:leading-[70px]">
-                        Land Your dream job using  <span className=" bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent text-nowrap">AI Powered </span> Resume.
-                    </h1>
+        {/* Subtitle */}
+        <motion.p 
+          variants={itemVariants}
+          className="text-base sm:text-lg text-slate-500 max-w-xl mt-6 leading-relaxed"
+        >
+          Build recruiter-approved professional resumes in minutes. Powered by intelligent real-time ATS optimization feedback.
+        </motion.p>
 
-                    <p className="max-w-md text-center text-base my-7">Create,edit and download professional resumes with AI assistance. </p>
+        {/* CTA Section */}
+        <motion.div 
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row items-center gap-4 mt-10"
+        >
+          <Link 
+            to="/app" 
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-full font-bold shadow-xl shadow-emerald-100 hover:shadow-emerald-200 transition-all group"
+          >
+            Create Free Resume
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <a 
+            href="#features" 
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-200 hover:bg-slate-50 rounded-full font-semibold text-slate-700 transition-all bg-white"
+          >
+            <Play className="w-4 h-4 text-emerald-500 fill-emerald-500/20" />
+            Learn How It Works
+          </a>
+        </motion.div>
 
-                    {/* CTA Buttons */}
-                    <div className="flex items-center gap-4 ">
-                        <Link to='/app' className="bg-green-500 hover:bg-green-600 text-white rounded-full px-9 h-12 m-1 ring-offset-2 ring-1 ring-green-400 flex items-center transition-colors">
-                            Get started
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right ml-1 size-4" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                        </Link>
-                        <button className="flex items-center gap-2 border border-slate-400 hover:bg-green-50 transition rounded-full px-7 h-12 text-slate-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-video size-5" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>
-                            <span>Try demo</span>
-                        </button>
-                    </div>
-
-                    <p className="py-6 text-slate-600 mt-14">Trusting by leading brands, including</p>
-
-                    <div className="flex flex-wrap justify-between max-sm:justify-center gap-6 max-w-3xl w-full mx-auto py-4" id="logo-container">
-                        {logos.map((logo, index) => <img key={index} src={logo} alt="logo" className="h-6 w-auto max-w-xs" />)}
-                    </div>
-                </div>
-            </div>
-            <style>
-                {`
-                    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-                    * {
-                        font-family: 'Poppins', sans-serif;
-                    }
-                `}
-            </style>
-        </>
-    );
+        {/* Trust Badges */}
+        <motion.div 
+          variants={itemVariants}
+          className="flex items-center justify-center gap-6 flex-wrap mt-16 text-xs text-slate-400 font-semibold"
+        >
+          <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> ATS-Compliant Layouts</span>
+          <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Secure Encryption</span>
+          <span className="flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Live AI Insights</span>
+        </motion.div>
+      </motion.div>
+    </div>
+  )
 }
 
 export default Hero

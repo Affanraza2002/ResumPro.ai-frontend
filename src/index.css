@@ -1,31 +1,94 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
 
-*{
-   font-family: "Outfit", sans-serif;
+* {
+  font-family: "Outfit", sans-serif;
 }
-@layer base{
-   button{
-      @apply cursor-pointer; 
-   }
-   input:not([type="checkbox"]){
-      @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg;
-   }
-   textarea{
-      @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg resize-none;
-   }
+
+:root {
+  --brand: #10b981;
+  --brand-dark: #059669;
+  --brand-light: #ecfdf5;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --surface: #f8fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
 }
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900;
+  }
+  button {
+    @apply cursor-pointer;
+  }
+  input:not([type="checkbox"]):not([type="file"]) {
+    @apply outline-none border border-slate-200 focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400 rounded-lg transition-all duration-200 bg-white;
+  }
+  textarea {
+    @apply outline-none border border-slate-200 focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400 rounded-lg resize-none transition-all duration-200 bg-white;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Glassmorphism utility */
+.glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #0d9488 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.12);
+}
+
+/* @media print */
 @media print {
+  .no-print, nav, header, .sidebar, button, .toast {
+    display: none !important;
+    visibility: hidden !important;
+  }
   body * {
-    visibility: hidden; /* hide everything */
+    visibility: hidden;
   }
   #resume-preview, #resume-preview * {
-    visibility: visible; /* show only resume */
+    visibility: visible;
   }
   #resume-preview {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 0;
   }
 }
